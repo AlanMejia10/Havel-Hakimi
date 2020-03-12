@@ -15,37 +15,24 @@ bool OrdernarPorValor(const std::pair<std::string, int> &a, const std::pair<std:
 }
 
 int main(){
-    std::map<std::string, int> data;
     int numElementos;
+    std::deque<std::pair<std::string, int>> nodes;
 
     std::cout << "Algoritmo de Havel Hakimi" << std::endl;
     InitFile();
-    // populating the map
-     // = {{"v1", 4}, {"v2", 3}, {"v3", 3}, {"v4", 4}, {"v5", 3}, {"v6", 2}, {"v7", 1}};
+
     std::cout<<"Ingresa el numero de elementos:";
     std::cin>>numElementos;
 
+    // filling the deque with data
     for(int i=0; i<numElementos; ++i){
         std::string node = "v" + std::to_string(i+1);
         int value;
         std::cout<<"ingresa el valor del nodo "<<node<<": ";
         std::cin>>value;
-        data.insert(std::pair<std::string, int>(node, value));
+        nodes.push_back(make_pair(node, value));
     }
     
-    // traversing the map data
-    std::map<std::string, int>::iterator it;
-    for (it = data.begin(); it != data.end(); it++){
-        std::cout << it->first << ": " << it->second << std::endl;
-    }
-
-    // Creating a deque to copy the map data 
-    std::deque<std::pair<std::string, int>> nodes;
-    std::map<std::string, int>::iterator it2;
-    for (it2 = data.begin(); it2 != data.end(); it2++){
-        nodes.push_back(make_pair(it2->first, it2->second));
-    }
-
     SortData(nodes, true);
     std::cout<<(HavelHakimiAlgorithm(nodes) ? "Graphviz file created" : "Unable to create a graph with the data provided")<<std::endl;
 
@@ -71,7 +58,7 @@ void InitFile(){
     if(file.fail())
         exit(1);
 
-    file<<"digraph G {\n";
+    file<<"graph G {\n";
     file.close();
 }
 
@@ -93,7 +80,7 @@ void WriteDotLanguage(std::string v0, std::string v1){
     if(file.fail())
         exit(1);
         
-    file<<v0<<"->"<<v1<<"\n";
+    file<<v0<<"--"<<v1<<"\n";
     file.close();
 }
 
